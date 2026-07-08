@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>HELIODON — Guide · How this was built</title>
+<meta name="description" content="How the HELIODON site was built with Fable: a machined-titanium object in three.js, lit entirely by a generated room environment." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
+<style>
+  :root{--bg:#0e0f12;--ink:#eceef2;--dim:#9aa0ab;--faint:#5d626d;--accent:#d9a066;--line:rgba(236,238,242,.12)}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:var(--bg);color:var(--ink);font-family:"Space Grotesk",system-ui,sans-serif;font-weight:300;line-height:1.65;-webkit-font-smoothing:antialiased}
+  a{color:var(--accent);text-decoration:none}a:hover{text-decoration:underline}
+  .wrap{max-width:760px;margin:0 auto;padding:clamp(28px,6vw,80px) clamp(20px,5vw,32px)}
+  .top{display:flex;justify-content:space-between;align-items:center;font-family:"JetBrains Mono",monospace;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;color:var(--faint);margin-bottom:clamp(40px,8vh,90px)}
+  .top a{color:var(--dim)}
+  .brand{font-weight:600;letter-spacing:.16em;color:var(--ink)}
+  .tag{display:inline-block;font-family:"JetBrains Mono",monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem}
+  h1{font-weight:600;font-size:clamp(2.6rem,8vw,4.6rem);line-height:1;letter-spacing:-.01em;margin-bottom:1.2rem}
+  h1 em{font-style:normal;color:var(--accent)}
+  .lede{font-size:clamp(1.1rem,2.2vw,1.35rem);color:var(--dim);max-width:56ch;margin-bottom:3.4rem}
+  h2{font-weight:600;font-size:clamp(1.7rem,4vw,2.4rem);margin:3rem 0 1rem;letter-spacing:-.01em}
+  p{color:var(--dim);margin:0 0 1.1rem;max-width:64ch}
+  strong{color:var(--ink);font-weight:500}
+  ul{color:var(--dim);margin:0 0 1.2rem 1.2rem}li{margin:.4rem 0}
+  code{font-family:"JetBrains Mono",monospace;font-size:.86em;background:rgba(255,255,255,.06);padding:.12em .4em;border-radius:3px;color:var(--ink)}
+  pre{background:#141519;border:1px solid var(--line);border-radius:6px;padding:18px 20px;overflow-x:auto;margin:0 0 1.4rem;font-size:.82rem;line-height:1.6;font-family:"JetBrains Mono",monospace}
+  pre code{background:none;padding:0;color:var(--dim)}
+  .stack{list-style:none;margin:0 0 1.2rem;padding:0}
+  .stack li{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .stack b{color:var(--ink);font-weight:500;min-width:120px}
+  .rule{height:1px;background:var(--line);margin:3rem 0}
+  footer{margin-top:4rem;padding-top:2rem;border-top:1px solid var(--line);font-family:"JetBrains Mono",monospace;font-size:.78rem;color:var(--faint)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="../">HELIODON</a><a href="../">← Back to site</a></div>
+  <span class="tag">Build guide · Site 03 of 25</span>
+  <h1>Titanium, lit by a room <em>that isn't there</em>.</h1>
+  <p class="lede">HELIODON is one of 25 sites built by Fable. The metal object looks expensively lit —
+    but there are no light probes or HDRIs, just a room three.js builds in memory.</p>
+
+  <h2>The idea</h2>
+  <p>An industrial-design studio should show a real object, turning slowly, catching light like the
+    real thing would on a bench. So the hero is a machined titanium form that rotates as you scroll and
+    leans toward your cursor.</p>
+
+  <h2>The stack</h2>
+  <ul class="stack">
+    <li><b>3D</b> three.js (r160) + its <code>RoomEnvironment</code> addon, via import-map.</li>
+    <li><b>Material</b> a metallic <code>MeshStandardMaterial</code> (metalness 1, low roughness).</li>
+    <li><b>Motion</b> GSAP scroll reveals; rAF for rotation + cursor lean.</li>
+    <li><b>Type</b> Space Grotesk + JetBrains Mono numerals.</li>
+    <li><b>Host</b> static files on GitHub Pages.</li>
+  </ul>
+
+  <h2>Signature technique: reflections with no HDRI</h2>
+  <p>Convincing metal needs something to reflect. Instead of loading a big environment image, three.js
+    ships a procedural <strong>RoomEnvironment</strong> — a tiny scene of glowing panels. We render it
+    once into a pre-filtered cube map with <code>PMREMGenerator</code> and set it as the scene's
+    environment; every metal surface then samples it for reflections, for free:</p>
+  <pre><code>const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+const mat = new THREE.MeshStandardMaterial({ metalness: 1, roughness: 0.32 });</code></pre>
+  <p>ACES filmic tone-mapping keeps the bright highlights from clipping, so the titanium rolls off to
+    white the way real metal does. Two soft directional lights (one warm, one cool) add edge definition.</p>
+
+  <h2>Details that matter</h2>
+  <ul>
+    <li><strong>Scroll = rotation</strong> — <code>scrollY</code> feeds straight into the object's Y rotation, so the page scroll is the turntable.</li>
+    <li><strong>Context safety</strong> — the WebGL context is acquired first and handed to the renderer, avoiding "existing context of a different type" errors.</li>
+    <li><strong>Legibility</strong> — the object sits right-of-centre on desktop and a soft scrim protects the left-aligned copy.</li>
+    <li><strong>Reduced motion / no WebGL</strong> — one still frame, or a CSS studio-gradient fallback.</li>
+  </ul>
+
+  <h2>Ship it on GitHub Pages</h2>
+  <pre><code>git init -b main &amp;&amp; git add -A &amp;&amp; git commit -m "ship"
+gh repo create fable-heliodon --public --source=. --push
+gh api --method POST /repos/OWNER/fable-heliodon/pages \
+  -f 'source[branch]=main' -f 'source[path]=/'</code></pre>
+
+  <div class="rule"></div>
+  <p>One material, one procedural room, one scroll-driven rotation — and a slab of metal that behaves like the real thing.</p>
+  <footer>Designed &amp; built by <strong>Fable</strong> · Part of a 25-site showcase · <a href="../">Return to HELIODON →</a></footer>
+</div>
+</body>
+</html>

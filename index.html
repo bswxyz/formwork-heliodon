@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<script>document.documentElement.classList.add('js')</script>
+<title>HELIODON — objects, engineered</title>
+<meta name="description" content="HELIODON is an industrial-design studio for precision objects — shown here as a machined titanium form you can turn with your scroll." />
+<meta name="theme-color" content="#0e0f12" />
+<meta property="og:title" content="HELIODON — objects, engineered" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="./styles.css" />
+<script type="importmap">
+{ "imports": {
+  "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+  "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+} }
+</script>
+</head>
+<body>
+<canvas id="stage" aria-hidden="true"></canvas>
+<div class="stage-vignette" aria-hidden="true"></div>
+
+<header class="nav">
+  <a class="brand" href="./">HELIODON</a>
+  <nav class="nav-links">
+    <a href="#object">The Object</a>
+    <a href="#studio">Studio</a>
+    <a href="./guide/">Guide</a>
+  </nav>
+  <div class="ident" aria-hidden="true">OBJ—001 · Ti</div>
+</header>
+
+<main>
+  <section class="hero">
+    <p class="eyebrow reveal">Industrial design studio · Precision objects</p>
+    <h1 class="hero-title">
+      <span class="line"><span>HELIODON</span></span>
+    </h1>
+    <p class="hero-sub reveal">We engineer objects the way instruments are made — one material,
+      tight tolerances, nothing that isn't load-bearing. Scroll to turn it.</p>
+    <div class="scroll-cue reveal" aria-hidden="true"><span></span>Turn</div>
+  </section>
+
+  <section id="object" class="specs">
+    <div class="specs-inner">
+      <p class="kicker reveal">[ OBJ—001 ]</p>
+      <h2 class="reveal">Meridian</h2>
+      <p class="specs-lead reveal">A desk object with no purpose but to be held — machined from a single
+        billet of grade-5 titanium, bead-blasted, then hand-finished over three days.</p>
+      <dl class="spec-grid">
+        <div class="reveal"><dt>Material</dt><dd>Ti-6Al-4V (grade 5)</dd></div>
+        <div class="reveal"><dt>Finish</dt><dd>Bead-blast + brushed</dd></div>
+        <div class="reveal"><dt>Tolerance</dt><dd>± 0.01 mm</dd></div>
+        <div class="reveal"><dt>Mass</dt><dd>214 g</dd></div>
+        <div class="reveal"><dt>Edition</dt><dd>200 numbered</dd></div>
+        <div class="reveal"><dt>Origin</dt><dd>Machined in-house</dd></div>
+      </dl>
+    </div>
+  </section>
+
+  <section id="studio" class="studio">
+    <div class="studio-inner">
+      <p class="kicker reveal">[ Studio ]</p>
+      <p class="studio-text reveal">Most products are drawn, then made. We do it the other way —
+        we <em>machine first</em>, holding the metal until the form tells us what it wants to be.</p>
+      <div class="studio-cols">
+        <div class="reveal"><h3>Practice</h3><p>Objects, tools, instruments and the occasional impractical sculpture. Small runs, real materials.</p></div>
+        <div class="reveal"><h3>Method</h3><p>CNC + hand. Every piece is finished by a person and carries its own number.</p></div>
+        <div class="reveal"><h3>Materials</h3><p>Titanium, tool steel, brass, anodised aluminium. Nothing plated, nothing painted.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="statement">
+    <p class="reveal">Form, <em>held to a thousandth.</em></p>
+  </section>
+</main>
+
+<footer class="footer">
+  <p class="foot-brand">HELIODON</p>
+  <div class="foot-bottom">
+    <span>© 2026 HELIODON STUDIO</span>
+    <span>Designed &amp; built by Fable · <a href="./guide/">How this was built →</a></span>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script type="module" src="./main.js"></script>
+</body>
+</html>
