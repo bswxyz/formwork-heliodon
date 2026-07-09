@@ -4,7 +4,7 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>HELIODON — Guide · How this was built</title>
-<meta name="description" content="How the HELIODON site was built with Fable: a machined-titanium object in three.js, lit entirely by a generated room environment." />
+<meta name="description" content="How the HELIODON site was built with Formwork: a machined-titanium object in three.js, lit entirely by a generated room environment." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet" />
@@ -40,7 +40,7 @@
   <div class="top"><a class="brand" href="../">HELIODON</a><a href="../">← Back to site</a></div>
   <span class="tag">Build guide · Site 03 of 25</span>
   <h1>Titanium, lit by a room <em>that isn't there</em>.</h1>
-  <p class="lede">HELIODON is one of 25 sites built by Fable. The metal object looks expensively lit —
+  <p class="lede">HELIODON is one of 25 sites built by Formwork. The metal object looks expensively lit —
     but there are no light probes or HDRIs, just a room three.js builds in memory.</p>
 
   <h2>The idea</h2>
@@ -78,13 +78,13 @@ const mat = new THREE.MeshStandardMaterial({ metalness: 1, roughness: 0.32 });</
 
   <h2>Ship it on GitHub Pages</h2>
   <pre><code>git init -b main &amp;&amp; git add -A &amp;&amp; git commit -m "ship"
-gh repo create fable-heliodon --public --source=. --push
-gh api --method POST /repos/OWNER/fable-heliodon/pages \
+gh repo create formwork-heliodon --public --source=. --push
+gh api --method POST /repos/OWNER/formwork-heliodon/pages \
   -f 'source[branch]=main' -f 'source[path]=/'</code></pre>
 
   <div class="rule"></div>
   <p>One material, one procedural room, one scroll-driven rotation — and a slab of metal that behaves like the real thing.</p>
-  <footer>Designed &amp; built by <strong>Fable</strong> · Part of a 25-site showcase · <a href="../">Return to HELIODON →</a></footer>
+  <footer>Designed &amp; built by <strong>Formwork</strong> · Part of a 25-site showcase · <a href="../">Return to HELIODON →</a></footer>
 </div>
 </body>
 </html>
